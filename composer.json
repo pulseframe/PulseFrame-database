@@ -1,0 +1,18 @@
+{
+    "name": "pulseframe/database",
+    "description": "PulseFrame's database functionality for php.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PulseFrame\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "KingMaj0r"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
