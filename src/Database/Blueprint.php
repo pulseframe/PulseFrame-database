@@ -12,9 +12,9 @@ class Blueprint
     $this->table = $tableName;
   }
 
-  public function id($type = 'int')
+  public function id($type = 'int', $autoIncrement = false)
   {
-    $this->addColumn('id', $type, ['primary' => true]);
+    $this->addColumn('id', $type, ['primary' => true, 'auto_increment' => $autoIncrement]);
     return $this;
   }
 
@@ -27,6 +27,12 @@ class Blueprint
   public function timestamp($name = 'timestamp')
   {
     $this->addColumn($name, 'timestamp');
+    return $this;
+  }
+
+  public function integer($name, $type = 'int', $autoIncrement = false)
+  {
+    $this->addColumn($name, $type, ['auto_increment' => $autoIncrement]);
     return $this;
   }
 

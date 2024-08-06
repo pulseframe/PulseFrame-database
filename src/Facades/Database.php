@@ -32,6 +32,12 @@ class Database
     return self::$conn[$connectionName];
   }
 
+  public static function getDatabaseType($connection = 'default')
+  {
+    $conn = self::getConnection($connection);
+    return $conn->getAttribute(PDO::ATTR_DRIVER_NAME);
+  }
+
   public static function getModelInstance($model)
   {
     if (is_string($model) && class_exists($model)) {

@@ -20,12 +20,23 @@ class Schema
     $blueprint = new Blueprint($tableName);
     $callback($blueprint);
 
+    $connection = self::$connection;
     $columns = $blueprint->getColumns();
     $columnsSql = [];
+
+    $dbType = Database::getDatabaseType($connection);
 
     foreach ($columns as $name => $attributes) {
       $type = $attributes['type'];
       $sql = "\"$name\" $type";
+
+      if (isset($attributes['auto_increment']) && $attributes['auto_increment']) {
+        if ($dbType === 'mysql') {
+          $sql .= " AUTO_INCREMENT";
+        } elseif ($dbType === 'pgsql') {
+          $sql .= " SERIAL";
+        }
+      }
 
       if (isset($attributes['nullable']) && $attributes['nullable']) {
         $sql .= " NULL";
@@ -47,7 +58,7 @@ class Schema
     $columnsString = implode(", ", $columnsSql);
     $sql = "CREATE TABLE IF NOT EXISTS \"{$tableName}\" ({$columnsString})";
 
-    Database::Execute(self::$connection, $sql);
+    Database::Execute($connection, $sql);
   }
 
   public static function dropTable($tableName)

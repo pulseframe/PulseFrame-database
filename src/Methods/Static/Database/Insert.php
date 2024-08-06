@@ -19,20 +19,24 @@ class Insert
     }
 
     $fields = array_keys($attributes);
-    $placeholders = array_map(function ($field) { return ':' . $field; }, $fields);
+    $placeholders = array_map(function ($field) {
+      return ':' . $field;
+    }, $fields);
 
-    $sql = "INSERT INTO \"" . $instance->table . "\" (" . implode(", ", array_map(function($field) { return "\"" . $field . "\""; }, $fields)) . ") VALUES (" . implode(", ", $placeholders) . ")";
+    $sql = "INSERT INTO \"" . $instance->table . "\" (" . implode(", ", array_map(function ($field) {
+      return "\"" . $field . "\"";
+    }, $fields)) . ") VALUES (" . implode(", ", $placeholders) . ")";
 
     if (!empty($conflictColumns)) {
       $conflictFormatted = implode(', ', array_map(function ($column) {
         return "\"" . $column . "\"";
       }, $conflictColumns));
-  
+
       if (!empty($updateFields)) {
         $updatePlaceholders = array_map(function ($field) {
           return "\"" . $field . "\" = excluded.\"" . $field . "\"";
         }, $updateFields);
-  
+
         $updateFormatted = implode(', ', $updatePlaceholders);
         $sql .= " ON CONFLICT (" . $conflictFormatted . ") DO UPDATE SET " . $updateFormatted;
       } else {
