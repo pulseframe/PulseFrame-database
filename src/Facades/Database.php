@@ -76,7 +76,7 @@ class Database
   {
     $methodClass = "\\PulseFrame\\Methods\\Static\\Database\\" . ucfirst($method);
     if (class_exists($methodClass)) {
-      $instance = new $methodClass($this->instance);
+      $instance = new $methodClass($this->conn);
       if (method_exists($instance, $method)) {
         return $instance->$method(...$args);
       } elseif (method_exists($instance, 'handle')) {
